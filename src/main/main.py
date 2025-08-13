@@ -3,7 +3,7 @@ Main application entry point.
 """
 import sys
 import json
-from main.service.OperationService import OperationService
+from service.OperationService import OperationService
 from util.OperationUtil import OperationUtil
 
 def main() -> None:
