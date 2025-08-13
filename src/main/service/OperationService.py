@@ -18,7 +18,6 @@ class OperationService:
             print(json.dumps({"received": operations}))
             return operations
         except Exception as e:            
-            raise Exception(f"Error processing operation: {str(e)}")
-            raise Exception(f"Error processing operation: {str(e)}")
+            raise Exception(f"Error processing operation: {str(e)}")            
            
    
