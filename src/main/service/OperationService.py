@@ -2,9 +2,8 @@
 Operation service for application.
 """
 
-from src.main.dto.OperationTaxDto import OperationTaxDto
-from src.main.dto.OperationDto import OperationDto
-from src.main.enum.OperationType import OperationType
+from dto.OperationTaxDto import OperationTaxDto
+from dto.OperationDto import OperationDto, OperationType
 
 class OperationService:
     """Service for operations."""
@@ -30,6 +29,4 @@ class OperationService:
             return tax_results
         except Exception as e:
             raise Exception(f"Error processing operation: {str(e)}")
-        except Exception as e:
-            raise Exception(f"Error processing operation: {str(e)}")
-
+        

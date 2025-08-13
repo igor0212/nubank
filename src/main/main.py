@@ -2,7 +2,6 @@
 Main application entry point.
 """
 import sys
-import json
 from service.OperationService import OperationService
 from util.OperationUtil import OperationUtil
 
