@@ -9,8 +9,8 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 setup(
     name="nubank-project",
     version="0.1.0",
-    author="Your Name",
-    author_email="your.email@example.com",
+    author="Igor Oliveira Valente da Silveira",
+    author_email="igor.oliveira.ufmg@gmail.com",
     description="A Python project with clean architecture",
     long_description=long_description,
     long_description_content_type="text/markdown",
