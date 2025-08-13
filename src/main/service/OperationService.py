@@ -7,7 +7,7 @@ import json
 class OperationService:
     """Service for operations."""
 
-    def processOperations(self, operations: list) -> list:
+    def processOperations(operations: list) -> list:
         """
         Gets a list of operations and processes them.
         
