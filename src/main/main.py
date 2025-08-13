@@ -4,8 +4,8 @@ Main application entry point.
 import logging
 from flask import Flask
 from config.settings import get_config
-from src.controllers.health_controller import health_bp
-from src.utils.logger import setup_logging
+from src.main.controller.health_controller import health_bp
+from src.main.util.logger import setup_logging
 
 
 def create_app() -> Flask:
