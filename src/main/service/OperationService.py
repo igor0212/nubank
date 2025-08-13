@@ -19,6 +19,9 @@ class OperationService:
         try:
             taxResultsList = []
             for operationDtoList in operationsList:
+                if(len(operationDtoList) == 0):                    
+                    continue
+                
                 operationTaxDtoList = []
                 for operationDto in operationDtoList:                    
                     if operationDto.operation == "sell" and operationDto.unit_cost > 15:
