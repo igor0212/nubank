@@ -27,7 +27,10 @@ class OperationServiceTest(unittest.TestCase):
                 OperationDto(OperationType.SELL, 10.00, 5000)
             ]
         ]
-        self.check_process_operations(actual, [2, 2])
+
+        expected_lengths = [2, 2]
+
+        self.check_process_operations(actual, expected_lengths)
 
     def test_process_operations_returns_tax_results_when_single_operation_each_list(self):
         #Given
@@ -35,12 +38,17 @@ class OperationServiceTest(unittest.TestCase):
             [OperationDto(OperationType.BUY, 5.00, 1000)],
             [OperationDto(OperationType.SELL, 25.00, 2000)]
         ]
-        self.check_process_operations(actual, [1, 1])
+
+        expected_lengths = [1, 1]
+
+        self.check_process_operations(actual, expected_lengths)
 
     def test_process_operations_returns_tax_results_when_empty_operation(self):
         #Given
         actual = []
-        self.check_process_operations(actual, [])
+        expected_lengths = []
+
+        self.check_process_operations(actual, expected_lengths)
 
 if __name__ == "__main__":
     unittest.main()
