@@ -2,56 +2,44 @@
 Main application entry point.
 """
 import logging
-from config.Settings import get_config
-from controller.HealthController import health_bp
-from util.Logger import setup_logging
-from flask import Flask, request, jsonify
+import sys
+import json 
+from util.Logger import log
 
-
-def create_app() -> 'Flask':
-    """Create and configure Flask application."""
-    config = get_config()
-    
-    # Initialize Flask app
-    app = Flask(__name__)    
-    app.config['DEBUG'] = config.debug
-    
-    # Setup logging
-    setup_logging(config.log_level, config.log_format)
-    
-    # Register blueprints
-    app.register_blueprint(health_bp, url_prefix='/api/v1')
-
-    @app.route('/api/v1/operations', methods=['GET'])
-    def operations():
-        """
-        Accepts a JSON array of operations and returns a simple acknowledgment.
-        Example input:
-        [
-            {"operation":"buy", "unit-cost":10.00, "quantity": 10000},
-            {"operation":"sell", "unit-cost":20.00, "quantity": 5000}
-        ]
-        """
-        data = request.get_json(force=True)
-        # Here you can process the data as needed
-        # For now, just echo back the received data
-        return jsonify({"received": data}), 200
-
-    return app
+def process_operations_file(lines):
+    """
+    Processes each received line (each must be a JSON list of operations).
+    Returns a list of lists of operations.
+    """
+    results = []
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            operations_list = json.loads(line)
+            results.append(operations_list)
+        except Exception:
+            message = f"Invalid input: {line}"
+            log(logging.ERROR, message)
+            raise Exception(message)
+    return results
 
 
 def main() -> None:
-    """Main application entry point."""
-    config = get_config()
-    app = create_app()
-    
-    logging.info(f"Starting {config.app_name} v{config.version}")
-    logging.info(f"Environment: {config.environment}")
-    
-    app.run(
-        debug=config.debug
-    )
+    """
+    Receives lists (one per line) of stock market operations in JSON format via stdin.
+    Example input:
+    [{"operation":"buy", "unit-cost":10.00, "quantity": 10000},{"operation":"sell", "unit-cost":20.00, "quantity": 5000}]
+    [{"operation":"buy", "unit-cost":20.00, "quantity": 10000}, {"operation":"sell", "unit-cost":10.00, "quantity": 5000}]
+    """
+    lines = sys.stdin.readlines()
+    try:
+        results = process_operations_file(lines)
+        print(json.dumps({"received": results}))
+    except Exception:        
+        sys.exit(1)
+    return
 
-
-if __name__ == "__main__":
+if __name__ == "__main__":        
     main()
