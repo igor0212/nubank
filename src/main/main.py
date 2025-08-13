@@ -2,7 +2,8 @@
 Main application entry point.
 """
 import sys
-from service.OperationService import OperationService
+import json
+from main.service.OperationService import OperationService
 from util.OperationUtil import OperationUtil
 
 def main() -> None:
@@ -15,7 +16,8 @@ def main() -> None:
     lines = sys.stdin.readlines()
     try:
         operations = OperationUtil.formatOperationsFile(lines)
-        OperationService.processOperations(operations)        
+        results = OperationService.processOperations(operations)
+        print(json.dumps({"results": results}))
     except Exception as e:
         raise Exception(str(e))        
     return

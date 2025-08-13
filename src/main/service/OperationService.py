@@ -2,8 +2,6 @@
 Operation service for application.
 """
 
-import json
-
 class OperationService:
     """Service for operations."""
 
@@ -14,8 +12,7 @@ class OperationService:
         Returns:
             list: List of processed operations.
         """
-        try:
-            print(json.dumps({"received": operations}))
+        try:            
             return operations
         except Exception as e:            
             raise Exception(f"Error processing operation: {str(e)}")            
