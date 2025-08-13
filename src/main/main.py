@@ -16,9 +16,9 @@ def main() -> None:
     try:
         operationsList = OperationUtil.formatOperationsFile(lines)
         results = OperationService.processOperations(operationsList)
-        print(results)        
+        sys.stdout.write(str(results))
     except Exception as e:
-        raise Exception(str(e))        
+        raise Exception(str(e))
     return
 
 if __name__ == "__main__":        
