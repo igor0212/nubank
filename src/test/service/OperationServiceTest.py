@@ -1,17 +1,28 @@
 import unittest
 from src.main.service.OperationService import OperationService
+from src.main.dto.OperationDto import OperationDto
 
 class OperationServiceTest(unittest.TestCase):
-    def test_should_call_operation_service_when_process_operation(self):
+    def test_process_operations_returns_tax_results(self):
         # Given
-        actual = [[{"operation":"buy", "unit-cost":10.00, "quantity": 10000},{"operation":"sell", "unit-cost":20.00, "quantity": 5000}],
-                  [{"operation":"buy", "unit-cost":20.00, "quantity": 10000}, {"operation":"sell", "unit-cost":10.00, "quantity": 5000}]]
+        actual = [
+            [
+                OperationDto("buy", 10.00, 10000),
+                OperationDto("sell", 20.00, 5000)
+            ],
+            [
+                OperationDto("buy", 20.00, 10000),
+                OperationDto("sell", 10.00, 5000)
+            ]
+        ]
 
         # When
-        expected = OperationService.processOperations(actual)
+        expected = OperationService.processOperations(actual)        
 
         # Then
         self.assertEqual(len(actual), len(expected))
+        for i in range(len(actual)):
+            self.assertEqual(len(actual[i]), len(expected[i]))
 
 if __name__ == "__main__":
     unittest.main()
