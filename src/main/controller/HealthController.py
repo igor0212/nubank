@@ -4,8 +4,8 @@ Health check controller for monitoring application status.
 from flask import Blueprint, jsonify, Response
 from typing import Dict, Any
 import logging
-from config.settings import get_config
-from src.services.health_service import HealthService
+from config.Settings import get_config
+from service.HealthService import HealthService
 
 # Create blueprint
 health_bp = Blueprint('health', __name__)

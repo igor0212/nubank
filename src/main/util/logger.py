@@ -1,6 +1,9 @@
 import logging
 
-def get_logger(name):
-    logger = logging.getLogger(name)
-    # ...existing code...
-    return logger
+def setup_logging(level, format):
+    logger = logging.getLogger("my_logger")
+    logger.setLevel(level)
+    handler = logging.StreamHandler()    
+    handler.setFormatter(format)
+    logger.addHandler(handler)
+    logger.info("Logger initialized!")
