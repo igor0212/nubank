@@ -11,16 +11,10 @@ class OperationDto:
         self.quantity = quantity
 
     @staticmethod
-    def from_dict(data: dict):
+    def fromDict(data: dict):
         return OperationDto(
             operation=data.get("operation"),
             unit_cost=data.get("unit-cost"),
             quantity=data.get("quantity"),
         )
-
-    def to_dict(self):
-        return {
-            "operation": self.operation.value,
-            "unit-cost": self.unit_cost,
-            "quantity": self.quantity,
-        }
+    

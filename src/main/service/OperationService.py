@@ -25,7 +25,7 @@ class OperationService:
                         tax = 10000.0
                     else:
                         tax = 0.0
-                    op_taxes.append(OperationTaxDto(tax).to_dict())
+                    op_taxes.append(OperationTaxDto(tax).toDict())
                 tax_results.append(op_taxes)
             return tax_results
         except Exception as e:

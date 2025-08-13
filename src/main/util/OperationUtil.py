@@ -23,7 +23,7 @@ class OperationUtil:
                 continue
             try:
                 operations_list = json.loads(line)
-                results.append([OperationDto.from_dict(op) for op in operations_list])                
+                results.append([OperationDto.fromDict(op) for op in operations_list])                
             except Exception:
                 raise Exception(f"Invalid input: {line}")
             
