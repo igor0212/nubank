@@ -1,6 +1,7 @@
 import unittest
 from src.main.service.OperationService import OperationService
-from src.main.dto.OperationDto import OperationDto, OperationType
+from src.main.enum.OperationType import OperationType
+from src.main.dto.OperationDto import OperationDto
 
 class OperationServiceTest(unittest.TestCase):
     def check_process_operations(self, actual, expected_lengths):

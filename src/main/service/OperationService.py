@@ -3,7 +3,8 @@ Operation service for application.
 """
 
 from src.main.dto.OperationTaxDto import OperationTaxDto
-from src.main.dto.OperationDto import OperationDto, OperationType
+from src.main.enum.OperationType import OperationType
+from src.main.dto.OperationDto import OperationDto
 
 class OperationService:
     """Service for operations."""

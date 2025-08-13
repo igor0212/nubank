@@ -1,8 +1,4 @@
-from enum import Enum
-
-class OperationType(Enum):
-    BUY = "buy"
-    SELL = "sell"
+from src.main.enum.OperationType import OperationType
 
 class OperationDto:
     def __init__(self, operation: str, unit_cost: float, quantity: int):
