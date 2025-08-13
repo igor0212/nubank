@@ -1,6 +1,6 @@
 import unittest
 from src.main.service.OperationService import OperationService
-from src.main.dto.OperationDto import OperationDto
+from src.main.dto.OperationDto import OperationDto, OperationType
 
 class OperationServiceTest(unittest.TestCase):
     def check_process_operations(self, actual, expected_lengths):
@@ -18,22 +18,21 @@ class OperationServiceTest(unittest.TestCase):
         #Given
         actual = [
             [
-                OperationDto("buy", 10.00, 10000),
-                OperationDto("sell", 20.00, 5000)
+                OperationDto(OperationType.BUY, 10.00, 10000),
+                OperationDto(OperationType.SELL, 20.00, 5000)
             ],
             [
-                OperationDto("buy", 20.00, 10000),
-                OperationDto("sell", 10.00, 5000)
+                OperationDto(OperationType.BUY, 20.00, 10000),
+                OperationDto(OperationType.SELL, 10.00, 5000)
             ]
         ]
-        
         self.check_process_operations(actual, [2, 2])
 
     def test_process_operations_returns_tax_results_when_single_operation_each_list(self):
         #Given
         actual = [
-            [OperationDto("buy", 5.00, 1000)],
-            [OperationDto("sell", 25.00, 2000)]
+            [OperationDto(OperationType.BUY, 5.00, 1000)],
+            [OperationDto(OperationType.SELL, 25.00, 2000)]
         ]
         self.check_process_operations(actual, [1, 1])
 
@@ -43,4 +42,5 @@ class OperationServiceTest(unittest.TestCase):
         self.check_process_operations(actual, [])
 
 if __name__ == "__main__":
+    unittest.main()
     unittest.main()
