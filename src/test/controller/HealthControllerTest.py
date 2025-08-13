@@ -1,6 +1,6 @@
 import unittest
-from controller.main_controller import MainController
-from service.main_service import MainService
+from controller.HealthControllerTest import MainController
+from service.MainServiceTest import MainService
 
 class TestControllerServiceIntegration(unittest.TestCase):
     def test_handle_request(self):
