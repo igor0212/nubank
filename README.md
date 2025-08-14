@@ -101,6 +101,6 @@ Given the following operations:
 
 0 New issues
 0 Accepted issues
-98.4% Coverage
+98.1% Coverage
 0.0% Duplications
 0 Security Hotspots
