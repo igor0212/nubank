@@ -161,5 +161,3 @@ class TaxService:
         else:
             tax = round(taxable_profit * TAX_PERCENTAGE, 2)
         return tax, accumulated_loss
-
-
