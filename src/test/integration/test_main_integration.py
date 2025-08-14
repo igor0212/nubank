@@ -6,11 +6,15 @@ import os
 
 class TestMainIntegration(unittest.TestCase):
     def test_main_with_valid_input(self):
+        # Given
+
         # Sample input: two lines, each a list of operations
         sample_input = (
-            '[{"operation":"buy", "unit-cost":10.00, "quantity": 100}, {"operation":"sell", "unit-cost":15.00, "quantity": 50}]\n'
-            '[{"operation":"buy", "unit-cost":20.00, "quantity": 100}, {"operation":"sell", "unit-cost":10.00, "quantity": 50}]\n'
+            '[{"operation":"buy", "unit-cost":10.00, "quantity": 100}, {"operation":"sell", "unit-cost":15.00, "quantity": 50},{"operation":"sell", "unit-cost":15.00, "quantity": 50}]\n'
+            '[{"operation":"buy", "unit-cost":10.00, "quantity": 10000},{"operation":"sell", "unit-cost":20.00, "quantity": 5000},{"operation":"sell", "unit-cost":5.00, "quantity": 5000}]\n'
         )
+
+        expected = "[[{'tax': 0.0}, {'tax': 0.0}, {'tax': 0.0}], [{'tax': 0.0}, {'tax': 10000.0}, {'tax': 0.0}]]"
 
         # Path to main.py
         main_path = os.path.join(
@@ -25,6 +29,8 @@ class TestMainIntegration(unittest.TestCase):
             os.path.dirname(os.path.dirname(__file__))))
         env["PYTHONPATH"] = project_root + \
             os.pathsep + env.get("PYTHONPATH", "")
+
+        # When
         result = subprocess.run(
             [sys.executable, main_path],
             input=sample_input.encode(),
@@ -33,12 +39,9 @@ class TestMainIntegration(unittest.TestCase):
             env=env
         )
 
-        output = result.stdout.decode().strip()
-        error_output = result.stderr.decode().strip()
-        if result.returncode != 0:
-            print("STDERR:", error_output)
-        # Check if output contains expected keys (e.g., "tax" or a list structure)
-        self.assertTrue("tax" in output or "[" in output)
+        actual = result.stdout.decode().strip()
+
+        self.assertEqual(actual, expected)
 
 
 if __name__ == "__main__":
