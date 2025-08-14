@@ -2,9 +2,8 @@
 Operation service for application.
 """
 
-from src.main.dto.OperationTaxDto import OperationTaxDto
-from src.main.enum.OperationType import OperationType
 from src.main.dto.OperationDto import OperationDto
+from src.main.service.TaxService import TaxService
 
 class OperationService:
     """Service for operations."""
@@ -18,16 +17,9 @@ class OperationService:
         """
         try:
             tax_results = []
-            for op_list in operations:
-                op_taxes = []
-                for op in op_list:                    
-                    if op.operation == OperationType.SELL and op.unit_cost > 15:
-                        tax = 10000.0
-                    else:
-                        tax = 0.0
-                    op_taxes.append(OperationTaxDto(tax).toDict())
-                tax_results.append(op_taxes)
+            for operationDtoList in operations:                
+                operation_taxes = TaxService.calculateTaxes(operationDtoList)                
+                tax_results.append(operation_taxes)
             return tax_results
         except Exception as e:
             raise Exception(f"Error processing operation: {str(e)}")
-        

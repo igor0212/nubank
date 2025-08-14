@@ -4,16 +4,16 @@ from src.main.enum.OperationType import OperationType
 from src.main.dto.OperationDto import OperationDto
 
 class OperationServiceTest(unittest.TestCase):
-    def check_process_operations(self, actual, expected_lengths):
+    def check_process_operations(self, expected, expected_lengths):
         #When
-        expected = OperationService.processOperations(actual)        
+        actual = OperationService.processOperations(expected)        
 
         #Then
-        self.assertEqual(len(actual), len(expected))
-        for i in range(len(actual)):
-            self.assertEqual(len(actual[i]), len(expected[i]))
+        self.assertEqual(len(expected), len(actual))
+        for i in range(len(expected)):
+            self.assertEqual(len(expected[i]), len(actual[i]))
             if expected_lengths:
-                self.assertEqual(len(expected[i]), expected_lengths[i])
+                self.assertEqual(len(actual[i]), expected_lengths[i])
 
     def test_process_operations_returns_tax_results(self):
         #Given
@@ -51,5 +51,4 @@ class OperationServiceTest(unittest.TestCase):
         self.check_process_operations(actual, expected_lengths)
 
 if __name__ == "__main__":
-    unittest.main()
-    unittest.main()
+    unittest.main()    
