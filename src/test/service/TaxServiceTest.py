@@ -6,7 +6,7 @@ from src.main.dto.OperationDto import OperationDto
 class TaxServiceTest(unittest.TestCase):
     def check_calculate_taxes(self, operations, expected):
         #When
-        actual = TaxService.calculateTaxes(operations)
+        actual = TaxService.calculate_taxes(operations)
 
         #Then
         self.assertEqual(actual, expected)    
@@ -136,9 +136,7 @@ class TaxServiceTest(unittest.TestCase):
 
         expected = [{"tax": 0.0},{"tax": 0.0},{"tax": 0.0},{"tax": 0.0},{"tax": 0.0}, {"tax": 0.0},{"tax": 1000.0},{"tax": 2400.0}]
 
-        self.check_calculate_taxes(operations, expected)
-
-       
+        self.check_calculate_taxes(operations, expected)       
 
 if __name__ == "__main__":
     unittest.main()

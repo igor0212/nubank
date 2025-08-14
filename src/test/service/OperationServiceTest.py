@@ -6,7 +6,7 @@ from src.main.dto.OperationDto import OperationDto
 class OperationServiceTest(unittest.TestCase):
     def check_process_operations(self, expected, expected_lengths):
         #When
-        actual = OperationService.processOperations(expected)        
+        actual = OperationService.process_operations(expected)        
 
         #Then
         self.assertEqual(len(expected), len(actual))

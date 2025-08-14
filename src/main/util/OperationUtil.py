@@ -9,7 +9,7 @@ class OperationUtil:
     """Util for operations."""
     
     @staticmethod
-    def formatOperationsFile(lines):
+    def format_operations_file(lines):
         """
         Format each received line (each must be a JSON list of operations).        
 
@@ -23,9 +23,9 @@ class OperationUtil:
                 continue
             try:
                 operations_list = json.loads(line)
-                results.append([OperationDto.fromDict(op) for op in operations_list])                
+                results.append([OperationDto.from_dict(op) for op in operations_list])                
             except Exception:
-                raise Exception(f"Invalid input: {line}")
+                raise ValueError(f"Invalid input: {line}")
             
         return results
     

@@ -10,7 +10,7 @@ class TaxService:
     """Service for taxes."""    
 
     @staticmethod
-    def calculateTaxes(operations: list[OperationDto]) -> list[OperationTaxDto]:
+    def calculate_taxes(operations: list[OperationDto]) -> list[OperationTaxDto]:
         """
         Calculates the tax for each operation in the list, following the business rules.
         Returns:
@@ -24,18 +24,18 @@ class TaxService:
         for op in operations:
             tax = ZERO
             if op.operation == OperationType.BUY:
-                weighted_avg, total_qty = TaxService.__updateWeightedAvg(weighted_avg, total_qty, op)                
+                weighted_avg, total_qty = TaxService.__update_weighted_avg(weighted_avg, total_qty, op)                
             elif op.operation == OperationType.SELL:
-                tax, weighted_avg, total_qty, accumulated_loss = TaxService.__processSell(
+                tax, weighted_avg, total_qty, accumulated_loss = TaxService.__process_sell(
                     op, weighted_avg, total_qty, accumulated_loss
                 )                
             
-            taxes.append(OperationTaxDto(tax).toDict())
+            taxes.append(OperationTaxDto(tax).to_dict())
 
         return taxes
 
     @staticmethod
-    def __updateWeightedAvg(weighted_avg, total_qty, op: OperationDto):
+    def __update_weighted_avg(weighted_avg, total_qty, op: OperationDto):
         """
         Updates the weighted average cost and total quantity for buy operations.
         Returns:
@@ -47,30 +47,30 @@ class TaxService:
         return weighted_avg, total_qty
 
     @staticmethod
-    def __processSell(op: OperationDto, weighted_avg, total_qty, accumulated_loss):
+    def __process_sell(op: OperationDto, weighted_avg, total_qty, accumulated_loss):
         """
         Processes a sell operation.
         Returns:
             tuple: (tax, weighted_avg, total_qty, accumulated_loss)
         """
-        sell_qty = TaxService.__getSellQuantity(op.quantity, total_qty)
+        sell_qty = TaxService.__get_sell_quantity(op.quantity, total_qty)
         total_qty -= sell_qty
-        total_value = TaxService.__calculateTotalValue(op.unit_cost, sell_qty)
-        profit = TaxService.__calculateProfit(op.unit_cost, weighted_avg, sell_qty)
+        total_value = TaxService.__calculate_total_value(op.unit_cost, sell_qty)
+        profit = TaxService.__calculate_profit(op.unit_cost, weighted_avg, sell_qty)
 
         taxable_profit = profit
-        
+
         # Should not deduct the profit obtained from accumulated losses if the total
         # value of the transaction is less than or equal to 20000.00
         if accumulated_loss < 0 and total_value > TOTAL_VALUE_TRANSACTION:
-            taxable_profit, accumulated_loss = TaxService.__deductAccumulatedLoss(taxable_profit, accumulated_loss)
-        tax, accumulated_loss = TaxService.__calculateTax(
+            taxable_profit, accumulated_loss = TaxService.__deduct_accumulated_loss(taxable_profit, accumulated_loss)
+        tax, accumulated_loss = TaxService.__calculate_tax(
             total_value, taxable_profit, profit, accumulated_loss
         )
         return tax, weighted_avg, total_qty, accumulated_loss
 
     @staticmethod
-    def __getSellQuantity(requested_qty, total_qty):
+    def __get_sell_quantity(requested_qty, total_qty):
         """
         Validating if the selling quantity is greater than the total quantity
         Returns:
@@ -79,7 +79,7 @@ class TaxService:
         return min(requested_qty, total_qty)
 
     @staticmethod
-    def __calculateTotalValue(unit_cost, quantity):
+    def __calculate_total_value(unit_cost, quantity):
         """
         Calculates the total value of a transaction.
         Returns:
@@ -88,7 +88,7 @@ class TaxService:
         return unit_cost * quantity
 
     @staticmethod
-    def __calculateProfit(unit_cost, weighted_avg, quantity):
+    def __calculate_profit(unit_cost, weighted_avg, quantity):
         """
         Calculates the profit for a given transaction.
         Returns:
@@ -97,7 +97,7 @@ class TaxService:
         return (unit_cost - weighted_avg) * quantity
 
     @staticmethod
-    def __deductAccumulatedLoss(taxable_profit, accumulated_loss):
+    def __deduct_accumulated_loss(taxable_profit, accumulated_loss):
         """
         Deducts the accumulated loss from the profit if applicable.        
         Returns:
@@ -112,7 +112,7 @@ class TaxService:
         return taxable_profit, accumulated_loss
 
     @staticmethod
-    def __calculateTax(total_value, taxable_profit, profit, accumulated_loss):
+    def __calculate_tax(total_value, taxable_profit, profit, accumulated_loss):
         """
         Calculates the tax based on the provided parameters.
         Returns:
