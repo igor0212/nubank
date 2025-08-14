@@ -9,7 +9,7 @@ class OperationUtil:
     """Util for operations."""
     
     @staticmethod
-    def format_operations_file(lines):
+    def format_operations_file(lines) -> list[list[OperationDto]]:
         """
         Format each received line (each must be a JSON list of operations).        
 
