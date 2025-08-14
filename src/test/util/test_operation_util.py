@@ -1,7 +1,6 @@
 import unittest
 from src.main.util.operation_util import OperationUtil
-from src.main.dto.operation_dto import OperationDto
-from src.main.enum.operation_type_enum import OperationTypeEnum
+from src.main.dto.operation_dto import OperationDto, OperationTypeEnum
 
 class TestOperationUtil(unittest.TestCase):
     def test_format_operations_file_valid(self):
@@ -44,7 +43,18 @@ class TestOperationUtil(unittest.TestCase):
         ]
 
         #Then
-        with self.assertRaises(Exception):
+        with self.assertRaises(ValueError):
+            OperationUtil.format_operations_file(lines)    
+
+    def test_format_operations_file_invalid_operation_type(self):
+        #Given
+        lines = [
+            '[{"operation":"invalid", "unit-cost":10.00, "quantity": 10000}]'
+        ]
+
+        #Then
+        # Should raise ValueError because operation type is invalid
+        with self.assertRaises(ValueError):
             OperationUtil.format_operations_file(lines)
 
 if __name__ == "__main__":

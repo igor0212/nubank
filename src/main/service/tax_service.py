@@ -27,17 +27,20 @@ class TaxService:
         total_qty = 0
         accumulated_loss = ZERO
 
-        for op in operations:
-            tax = ZERO
-            if op.operation == OperationTypeEnum.BUY:
-                weighted_avg, total_qty = TaxService.__update_weighted_avg(weighted_avg, total_qty, op)                
-            elif op.operation == OperationTypeEnum.SELL:
-                tax, weighted_avg, total_qty, accumulated_loss = TaxService.__process_sell(
-                    op, weighted_avg, total_qty, accumulated_loss
-                )                
+        try:
+            for op in operations:
+                tax = ZERO
+                if op.operation == OperationTypeEnum.BUY:
+                    weighted_avg, total_qty = TaxService.__update_weighted_avg(weighted_avg, total_qty, op)                
+                elif op.operation == OperationTypeEnum.SELL:
+                    tax, weighted_avg, total_qty, accumulated_loss = TaxService.__process_sell(
+                        op, weighted_avg, total_qty, accumulated_loss
+                    )
             
-            taxes.append(OperationTaxDto(tax).to_dict())
-
+                taxes.append(OperationTaxDto(tax).to_dict())
+        except Exception as e:
+            raise ValueError(str(e))
+        
         return taxes
 
     @staticmethod

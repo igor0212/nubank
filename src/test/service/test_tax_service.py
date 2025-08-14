@@ -136,7 +136,7 @@ class TestTaxService(unittest.TestCase):
 
         expected = [{"tax": 0.0},{"tax": 0.0},{"tax": 0.0},{"tax": 0.0},{"tax": 0.0}, {"tax": 0.0},{"tax": 1000.0},{"tax": 2400.0}]
 
-        self.check_calculate_taxes(operations, expected)       
+        self.check_calculate_taxes(operations, expected)   
 
 if __name__ == "__main__":
     unittest.main()
