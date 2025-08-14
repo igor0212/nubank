@@ -20,7 +20,7 @@ class TaxService:
         - No tax is paid if the total value of the sell operation (unit_cost * quantity) <= 20000.
         - No tax is paid on buy operations.
         Returns:
-            list: List of tax values (float) for each operation.
+            list: List of tax values (OperationTaxDto) for each operation.
         """
         taxes = []
         weighted_avg = ZERO
@@ -28,7 +28,7 @@ class TaxService:
         accumulated_loss = ZERO
 
         for op in operations:
-            if op.operation == OperationType.BUY:
+            if op.operation == OperationType.BUY:                
                 # Recalculate weighted average price
                 total_cost = weighted_avg * total_qty + op.unit_cost * op.quantity
                 total_qty += op.quantity
@@ -46,15 +46,15 @@ class TaxService:
                 total_value = op.unit_cost * sell_qty
                 profit = (op.unit_cost - weighted_avg) * sell_qty
 
-                # Deduct accumulated loss from profit
+                # Deduct accumulated loss from profit if total operation value > 20000 
                 taxable_profit = profit
-                if accumulated_loss < 0:
+                if accumulated_loss < 0 and total_value > TOTAL_VALUE_TRANSACTION:
                     taxable_profit += accumulated_loss
                     if taxable_profit > 0:
                         accumulated_loss = ZERO
                     else:
                         accumulated_loss = taxable_profit
-                        taxable_profit = ZERO
+                        taxable_profit = ZERO                
 
                 # No tax if total operation value <= 20000
                 if total_value <= TOTAL_VALUE_TRANSACTION or taxable_profit <= 0:
