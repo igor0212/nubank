@@ -95,3 +95,12 @@ Given the following operations:
 - The first "sell" is at 20.00, profit per share is 10.00, total profit is 50,000.00. Tax is 20% of 50,000.00 = 10,000.00.
 - The second "buy" updates the average price.
 - The second "sell" is at 10.00, which may result in no tax if there is no profit.
+
+
+## Sonar Tests Results
+
+0 New issues
+0 Accepted issues
+97.5% Coverage
+0.0% Duplications
+0 Security Hotspots
