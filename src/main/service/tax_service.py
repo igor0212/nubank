@@ -3,7 +3,7 @@ Tax service for application.
 Provides methods to calculate taxes for stock market operations according to business rules.
 """
 from src.main.config.tax_config import TAX_PERCENTAGE, ZERO, TOTAL_VALUE_TRANSACTION
-from src.main.enum.operation_type_enum import OperationTypeEnum
+from src.main.enums.operation_type_enum import OperationTypeEnum
 from src.main.dto.operation_dto import OperationDto
 from src.main.dto.operation_tax_dto import OperationTaxDto
 

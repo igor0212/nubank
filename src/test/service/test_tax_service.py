@@ -1,6 +1,6 @@
 import unittest
 from src.main.service.tax_service import TaxService
-from src.main.enum.operation_type_enum import OperationTypeEnum
+from src.main.enums.operation_type_enum import OperationTypeEnum
 from src.main.dto.operation_dto import OperationDto
 
 
