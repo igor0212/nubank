@@ -1,15 +1,16 @@
 """
-Operation util for application.
+Operation util for application. It provides utility functions for processing operations.
 """
 
 import json
 from src.main.dto.operation_dto import OperationDto
 
+
 class OperationUtil:
     """
     Utility class for formatting and processing operation input data.
     """
-    
+
     @staticmethod
     def format_operations_file(lines) -> list[list[OperationDto]]:
         """
@@ -28,8 +29,9 @@ class OperationUtil:
                 continue
             try:
                 operations_list = json.loads(line)
-                results.append([OperationDto.from_dict(op) for op in operations_list])                
+                results.append([OperationDto.from_dict(op)
+                               for op in operations_list])
             except Exception:
                 raise ValueError(f"Invalid input: {line}")
-            
+
         return results

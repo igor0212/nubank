@@ -1,5 +1,6 @@
 from src.main.enum.operation_type_enum import OperationTypeEnum
 
+
 class OperationDto:
     """
     Data Transfer Object representing a stock market operation (buy or sell).

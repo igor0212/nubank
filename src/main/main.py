@@ -5,6 +5,7 @@ import sys
 from src.main.service.operation_service import OperationService
 from src.main.util.operation_util import OperationUtil
 
+
 def main() -> None:
     """
     Reads lists (one per line) of stock market operations in JSON format via stdin,
@@ -20,7 +21,8 @@ def main() -> None:
         results = OperationService.process_operations(operations_list)
         sys.stdout.write(str(results))
     except Exception as e:
-        raise RuntimeError(str(e))    
+        raise RuntimeError(str(e))
 
-if __name__ == "__main__":        
+
+if __name__ == "__main__":
     main()

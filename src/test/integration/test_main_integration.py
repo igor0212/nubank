@@ -3,6 +3,7 @@ import subprocess
 import sys
 import os
 
+
 class TestMainIntegration(unittest.TestCase):
     def test_main_with_valid_input(self):
         # Sample input: two lines, each a list of operations
@@ -31,6 +32,7 @@ class TestMainIntegration(unittest.TestCase):
             print("STDERR:", error_output)
         # Check if output contains expected keys (e.g., "tax" or a list structure)
         self.assertTrue("tax" in output or "[" in output)
+
 
 if __name__ == "__main__":
     unittest.main()

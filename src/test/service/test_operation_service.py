@@ -2,6 +2,7 @@ import unittest
 from src.main.service.operation_service import OperationService
 from src.main.dto.operation_dto import OperationDto, OperationTypeEnum
 
+
 class TestOperationService(unittest.TestCase):
     def test_process_operations_returns_tax_results(self):
         actual = [
@@ -28,6 +29,7 @@ class TestOperationService(unittest.TestCase):
         # Should raise if input is not a list of lists of OperationDto
         with self.assertRaises(Exception):
             OperationService.process_operations([{"operation": "buy"}])
+
 
 if __name__ == "__main__":
     unittest.main()

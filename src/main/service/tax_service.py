@@ -7,11 +7,12 @@ from src.main.enum.operation_type_enum import OperationTypeEnum
 from src.main.dto.operation_dto import OperationDto
 from src.main.dto.operation_tax_dto import OperationTaxDto
 
+
 class TaxService:
     """
     Service for taxes.
     Calculates taxes for a list of operations, considering weighted average, accumulated loss, and business rules.
-    """    
+    """
 
     @staticmethod
     def calculate_taxes(operations: list[OperationDto]) -> list[OperationTaxDto]:
@@ -31,16 +32,17 @@ class TaxService:
             for op in operations:
                 tax = ZERO
                 if op.operation == OperationTypeEnum.BUY:
-                    weighted_avg, total_qty = TaxService.__update_weighted_avg(weighted_avg, total_qty, op)                
+                    weighted_avg, total_qty = TaxService.__update_weighted_avg(
+                        weighted_avg, total_qty, op)
                 elif op.operation == OperationTypeEnum.SELL:
                     tax, weighted_avg, total_qty, accumulated_loss = TaxService.__process_sell(
                         op, weighted_avg, total_qty, accumulated_loss
                     )
-            
+
                 taxes.append(OperationTaxDto(tax).to_dict())
         except Exception as e:
             raise ValueError(str(e))
-        
+
         return taxes
 
     @staticmethod
@@ -73,15 +75,18 @@ class TaxService:
         """
         sell_qty = TaxService.__get_sell_quantity(op.quantity, total_qty)
         total_qty -= sell_qty
-        total_value = TaxService.__calculate_total_value(op.unit_cost, sell_qty)
-        profit = TaxService.__calculate_profit(op.unit_cost, weighted_avg, sell_qty)
+        total_value = TaxService.__calculate_total_value(
+            op.unit_cost, sell_qty)
+        profit = TaxService.__calculate_profit(
+            op.unit_cost, weighted_avg, sell_qty)
 
         taxable_profit = profit
 
         # Should not deduct the profit obtained from accumulated losses if the total
         # value of the transaction is less than or equal to 20000.00
         if accumulated_loss < 0 and total_value > TOTAL_VALUE_TRANSACTION:
-            taxable_profit, accumulated_loss = TaxService.__deduct_accumulated_loss(taxable_profit, accumulated_loss)
+            taxable_profit, accumulated_loss = TaxService.__deduct_accumulated_loss(
+                taxable_profit, accumulated_loss)
         tax, accumulated_loss = TaxService.__calculate_tax(
             total_value, taxable_profit, profit, accumulated_loss
         )
@@ -96,7 +101,7 @@ class TaxService:
             total_qty (int): Current total quantity.
         Returns:
             int: The validated selling quantity.
-        """        
+        """
         return min(requested_qty, total_qty)
 
     @staticmethod
@@ -133,7 +138,7 @@ class TaxService:
             accumulated_loss (float): Current accumulated loss.
         Returns:
             tuple: (taxable_profit, accumulated_loss)
-        """        
+        """
         taxable_profit += accumulated_loss
         if taxable_profit > 0:
             accumulated_loss = ZERO

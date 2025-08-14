@@ -1,9 +1,11 @@
 """
-Operation service for application.
+Operation service for application. It handles the processing of stock market operations and 
+tax calculations.
 """
 
 from src.main.dto.operation_dto import OperationDto
 from src.main.service.tax_service import TaxService
+
 
 class OperationService:
     """
@@ -23,8 +25,9 @@ class OperationService:
         """
         try:
             tax_results = []
-            for operation_dto_list in operations:                
-                operation_taxes = TaxService.calculate_taxes(operation_dto_list)                
+            for operation_dto_list in operations:
+                operation_taxes = TaxService.calculate_taxes(
+                    operation_dto_list)
                 tax_results.append(operation_taxes)
             return tax_results
         except Exception as e:
