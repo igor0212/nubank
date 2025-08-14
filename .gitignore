@@ -151,3 +151,8 @@ logs/
 .env.development
 .env.test
 .env.production
+
+# SonarQube analysis files
+.scannerwork/
+sonar-report.json
+report-task.txt
