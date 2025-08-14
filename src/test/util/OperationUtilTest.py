@@ -11,7 +11,7 @@ class OperationUtilTest(unittest.TestCase):
         ]
 
         #When
-        result = OperationUtil.formatOperationsFile(lines)
+        result = OperationUtil.format_operations_file(lines)
 
         #Then
         self.assertEqual(len(result), 2)
@@ -30,7 +30,7 @@ class OperationUtilTest(unittest.TestCase):
         ]
 
         #When
-        result = OperationUtil.formatOperationsFile(lines)
+        result = OperationUtil.format_operations_file(lines)
 
         #Then
         self.assertEqual(len(result), 1)
@@ -44,7 +44,7 @@ class OperationUtilTest(unittest.TestCase):
 
         #Then
         with self.assertRaises(Exception):
-            OperationUtil.formatOperationsFile(lines)
+            OperationUtil.format_operations_file(lines)
 
 if __name__ == "__main__":
     unittest.main()

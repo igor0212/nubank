@@ -14,12 +14,11 @@ def main() -> None:
     """
     lines = sys.stdin.readlines()
     try:
-        operationsList = OperationUtil.formatOperationsFile(lines)
-        results = OperationService.processOperations(operationsList)
+        operations_list = OperationUtil.format_operations_file(lines)
+        results = OperationService.process_operations(operations_list)
         sys.stdout.write(str(results))
     except Exception as e:
-        raise Exception(str(e))
-    return
+        raise RuntimeError(str(e))    
 
 if __name__ == "__main__":        
     main()
