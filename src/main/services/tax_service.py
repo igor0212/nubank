@@ -43,10 +43,10 @@ class TaxService:
             for op in operations:
                 tax = ZERO
                 if op.operation == OperationTypeEnum.BUY:
-                    weighted_avg, total_qty = TaxUtil.update_weighted_avg(
+                    weighted_avg, total_qty = TaxUtil.process_buy_operation(
                         weighted_avg, total_qty, op)
                 elif op.operation == OperationTypeEnum.SELL:
-                    tax, weighted_avg, total_qty, accumulated_loss = self.__process_sell(
+                    tax, weighted_avg, total_qty, accumulated_loss = self.__process_sell_operation(
                         op, weighted_avg, total_qty, accumulated_loss
                     )
 
@@ -56,7 +56,7 @@ class TaxService:
 
         return taxes
 
-    def __process_sell(self, op: OperationDto, weighted_avg, total_qty, accumulated_loss):
+    def __process_sell_operation(self, op: OperationDto, weighted_avg, total_qty, accumulated_loss):
         """
         Processes a sell operation, updating quantities, accumulated loss, and calculating tax.
         Args:
@@ -67,9 +67,9 @@ class TaxService:
         Returns:
             tuple: (tax, weighted_avg, total_qty, accumulated_loss)
         """
-        sell_qty = TaxUtil.get_sell_quantity(op.quantity, total_qty)
+        sell_qty = TaxUtil.validate_sell_quantity(op.quantity, total_qty)
         total_qty -= sell_qty
-        total_value = TaxUtil.calculate_total_value(
+        total_value = TaxUtil.calculate_transaction_total_value(
             op.unit_cost, sell_qty)
         profit = TaxUtil.calculate_profit(
             op.unit_cost, weighted_avg, sell_qty)

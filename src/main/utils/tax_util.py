@@ -11,9 +11,9 @@ class TaxUtil:
     """
 
     @staticmethod
-    def update_weighted_avg(weighted_avg, total_qty, op: OperationDto):
+    def process_buy_operation(weighted_avg, total_qty, op: OperationDto):
         """
-        Updates the weighted average cost and total quantity for buy operations.
+        Processes a buy operation. Gets the weighted average cost and total quantity for buy operations.
         Args:
             weighted_avg (float): Current weighted average.
             total_qty (int): Current total quantity.
@@ -27,7 +27,7 @@ class TaxUtil:
         return weighted_avg, total_qty
 
     @staticmethod
-    def get_sell_quantity(requested_qty, total_qty):
+    def validate_sell_quantity(requested_qty, total_qty):
         """
         Validates if the selling quantity is greater than the total quantity.
         Args:
@@ -39,7 +39,7 @@ class TaxUtil:
         return min(requested_qty, total_qty)
 
     @staticmethod
-    def calculate_total_value(unit_cost, quantity):
+    def calculate_transaction_total_value(unit_cost, quantity):
         """
         Calculates the total value of a transaction.
         Args:
