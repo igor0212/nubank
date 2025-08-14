@@ -13,15 +13,15 @@ class TestOperationUtil(unittest.TestCase):
         ]
 
         # When
-        result = OperationUtil.format_operations_file(lines)
+        actual = OperationUtil.format_operations_file(lines)
 
         # Then
-        self.assertEqual(len(result), 2)
-        self.assertIsInstance(result[0][0], OperationDto)
-        self.assertEqual(result[0][0].operation, OperationTypeEnum.BUY)
-        self.assertEqual(result[0][1].operation, OperationTypeEnum.SELL)
-        self.assertEqual(result[1][0].unit_cost, 20.00)
-        self.assertEqual(result[1][0].quantity, 10000)
+        self.assertEqual(len(actual), 2)
+        self.assertIsInstance(actual[0][0], OperationDto)
+        self.assertEqual(actual[0][0].operation, OperationTypeEnum.BUY)
+        self.assertEqual(actual[0][1].operation, OperationTypeEnum.SELL)
+        self.assertEqual(actual[1][0].unit_cost, 20.00)
+        self.assertEqual(actual[1][0].quantity, 10000)
 
     def test_format_operations_file_empty_lines(self):
         # Given
@@ -32,11 +32,11 @@ class TestOperationUtil(unittest.TestCase):
         ]
 
         # When
-        result = OperationUtil.format_operations_file(lines)
+        actual = OperationUtil.format_operations_file(lines)
 
         # Then
-        self.assertEqual(len(result), 1)
-        self.assertEqual(result[0][0].operation, OperationTypeEnum.BUY)
+        self.assertEqual(len(actual), 1)
+        self.assertEqual(actual[0][0].operation, OperationTypeEnum.BUY)
 
     def test_format_operations_file_invalid_json(self):
         # Given
@@ -55,7 +55,6 @@ class TestOperationUtil(unittest.TestCase):
         ]
 
         # Then
-        # Should raise ValueError because operation type is invalid
         with self.assertRaises(OperationProcessingError):
             OperationUtil.format_operations_file(lines)
 

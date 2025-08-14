@@ -9,7 +9,8 @@ class TestOperationService(unittest.TestCase):
         self.operation_service = OperationService(tax_service=TaxService())
 
     def test_process_operations_returns_tax_results(self):
-        actual = [
+        # Given
+        operations = [
             [
                 OperationDto(OperationTypeEnum.BUY, 10.00, 10000),
                 OperationDto(OperationTypeEnum.SELL, 20.00, 5000)
@@ -19,20 +20,32 @@ class TestOperationService(unittest.TestCase):
                 OperationDto(OperationTypeEnum.SELL, 10.00, 5000)
             ]
         ]
-        expected = self.operation_service.process_operations(actual)
-        self.assertEqual(len(actual), len(expected))
-        for i in range(len(actual)):
-            self.assertEqual(len(actual[i]), len(expected[i]))
+
+        # When
+        actual = self.operation_service.process_operations(operations)
+
+        # Then
+        self.assertEqual(len(operations), len(actual))
+        for i in range(len(operations)):
+            self.assertEqual(len(operations[i]), len(actual[i]))
 
     def test_process_operations_empty(self):
-        actual = []
-        expected = self.operation_service.process_operations(actual)
-        self.assertEqual(expected, [])
+        # Given
+        expected = []
+
+        # When
+        actual = self.operation_service.process_operations(expected)
+
+        # Then
+        self.assertEqual(actual, expected)
 
     def test_process_operations_invalid_input(self):
-        # Should raise if input is not a list of lists of OperationDto
+        # Given
+        operations = [{"operation": "buy"}]
+
+        # Then
         with self.assertRaises(Exception):
-            self.operation_service.process_operations([{"operation": "buy"}])
+            self.operation_service.process_operations(operations)
 
 
 if __name__ == "__main__":

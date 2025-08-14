@@ -11,7 +11,7 @@ class TaxUtil:
     """
 
     @staticmethod
-    def process_buy_operation(weighted_avg, total_qty, op: OperationDto):
+    def process_buy_operation(weighted_avg, total_qty, op: OperationDto) -> tuple:
         """
         Processes a buy operation. Gets the weighted average cost and total quantity for buy operations.
         Args:
@@ -27,7 +27,7 @@ class TaxUtil:
         return weighted_avg, total_qty
 
     @staticmethod
-    def validate_sell_quantity(requested_qty, total_qty):
+    def validate_sell_quantity(requested_qty, total_qty) -> int:
         """
         Validates if the selling quantity is greater than the total quantity.
         Args:
@@ -39,7 +39,7 @@ class TaxUtil:
         return min(requested_qty, total_qty)
 
     @staticmethod
-    def calculate_transaction_total_value(unit_cost, quantity):
+    def calculate_transaction_total_value(unit_cost, quantity) -> float:
         """
         Calculates the total value of a transaction.
         Args:
@@ -51,7 +51,7 @@ class TaxUtil:
         return unit_cost * quantity
 
     @staticmethod
-    def calculate_profit(unit_cost, weighted_avg, quantity):
+    def calculate_profit(unit_cost, weighted_avg, quantity) -> float:
         """
         Calculates the profit for a given transaction.
         Args:
@@ -64,7 +64,7 @@ class TaxUtil:
         return (unit_cost - weighted_avg) * quantity
 
     @staticmethod
-    def deduct_accumulated_loss(taxable_profit, accumulated_loss):
+    def deduct_accumulated_loss(taxable_profit, accumulated_loss) -> tuple:
         """
         Deducts the accumulated loss from the profit if applicable.
         Args:

@@ -37,7 +37,7 @@ class TestInputService(unittest.TestCase):
         # When
         result = self.input_service.process_input(lines)
 
-        # Thens
+        # Then
         self.assertEqual(len(result), 1)
 
     def test_process_input_invalid_json(self):
@@ -56,7 +56,7 @@ class TestInputService(unittest.TestCase):
             '[{"operation":"buy", "quantity": 100}]'
         ]
 
-        # Thens
+        # Then
         with self.assertRaises(OperationProcessingError):
             self.input_service.process_input(lines)
 
