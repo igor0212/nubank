@@ -6,8 +6,7 @@ from src.main.dto.operation_dto import OperationDto, OperationTypeEnum
 
 class TestOperationService(unittest.TestCase):
     def setUp(self):
-        # Inject dependency for testability
-        self.operation_service = OperationService(tax_service=TaxService)
+        self.operation_service = OperationService(tax_service=TaxService())
 
     def test_process_operations_returns_tax_results(self):
         actual = [

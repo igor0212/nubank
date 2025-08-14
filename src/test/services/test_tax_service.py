@@ -5,9 +5,12 @@ from src.main.dto.operation_dto import OperationDto
 
 
 class TestTaxService(unittest.TestCase):
+    def setUp(self):
+        self.tax_service = TaxService()
+
     def check_calculate_taxes(self, operations, expected):
         # When
-        actual = TaxService.calculate_taxes(operations)
+        actual = self.tax_service.calculate_taxes(operations)
 
         # Then
         self.assertEqual(actual, expected)

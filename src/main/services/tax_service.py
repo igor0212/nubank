@@ -2,7 +2,7 @@
 Tax service for application.
 Provides methods to calculate taxes for stock market operations according to business rules.
 """
-from src.main.config.tax_config import TAX_PERCENTAGE, ZERO, TOTAL_VALUE_TRANSACTION
+from src.main.config.tax_config import TAX_PERCENTAGE, ZERO, TOTAL_VALUE_TRANSACTION_WITH_NO_TAX
 from src.main.enums.operation_type_enum import OperationTypeEnum
 from src.main.exceptions.exception import TaxCalculationError
 from src.main.dto.operation_dto import OperationDto
@@ -13,10 +13,19 @@ class TaxService:
     """
     Service for taxes.
     Calculates taxes for a list of operations, considering weighted average, accumulated loss, and business rules.
+    Allows dependency injection for configuration.
     """
 
-    @staticmethod
-    def calculate_taxes(operations: list[OperationDto]) -> list[OperationTaxDto]:
+    def __init__(self, tax_percentage: float = TAX_PERCENTAGE, total_value_transaction_with_no_tax: float = TOTAL_VALUE_TRANSACTION_WITH_NO_TAX):
+        """
+        Args:
+            tax_percentage (float): The tax percentage to apply on profits.
+            total_value_transaction_with_no_tax (float): The maximum transaction value to does not apply tax.
+        """
+        self.tax_percentage = tax_percentage
+        self.total_value_transaction_with_no_tax = total_value_transaction_with_no_tax
+
+    def calculate_taxes(self, operations: list[OperationDto]) -> list[OperationTaxDto]:
         """
         Calculates the tax for each operation in the list, following the business rules.
         Args:
@@ -33,10 +42,10 @@ class TaxService:
             for op in operations:
                 tax = ZERO
                 if op.operation == OperationTypeEnum.BUY:
-                    weighted_avg, total_qty = TaxService.__update_weighted_avg(
+                    weighted_avg, total_qty = self._update_weighted_avg(
                         weighted_avg, total_qty, op)
                 elif op.operation == OperationTypeEnum.SELL:
-                    tax, weighted_avg, total_qty, accumulated_loss = TaxService.__process_sell(
+                    tax, weighted_avg, total_qty, accumulated_loss = self._process_sell(
                         op, weighted_avg, total_qty, accumulated_loss
                     )
 
@@ -46,8 +55,7 @@ class TaxService:
 
         return taxes
 
-    @staticmethod
-    def __update_weighted_avg(weighted_avg, total_qty, op: OperationDto):
+    def _update_weighted_avg(self, weighted_avg, total_qty, op: OperationDto):
         """
         Updates the weighted average cost and total quantity for buy operations.
         Args:
@@ -62,8 +70,7 @@ class TaxService:
         weighted_avg = total_cost / total_qty if total_qty > 0 else ZERO
         return weighted_avg, total_qty
 
-    @staticmethod
-    def __process_sell(op: OperationDto, weighted_avg, total_qty, accumulated_loss):
+    def _process_sell(self, op: OperationDto, weighted_avg, total_qty, accumulated_loss):
         """
         Processes a sell operation, updating quantities, accumulated loss, and calculating tax.
         Args:
@@ -74,27 +81,26 @@ class TaxService:
         Returns:
             tuple: (tax, weighted_avg, total_qty, accumulated_loss)
         """
-        sell_qty = TaxService.__get_sell_quantity(op.quantity, total_qty)
+        sell_qty = self._get_sell_quantity(op.quantity, total_qty)
         total_qty -= sell_qty
-        total_value = TaxService.__calculate_total_value(
+        total_value = self._calculate_total_value(
             op.unit_cost, sell_qty)
-        profit = TaxService.__calculate_profit(
+        profit = self._calculate_profit(
             op.unit_cost, weighted_avg, sell_qty)
 
         taxable_profit = profit
 
         # Should not deduct the profit obtained from accumulated losses if the total
-        # value of the transaction is less than or equal to 20000.00
-        if accumulated_loss < 0 and total_value > TOTAL_VALUE_TRANSACTION:
-            taxable_profit, accumulated_loss = TaxService.__deduct_accumulated_loss(
+        # value of the transaction is less than or equal to total_value_transaction
+        if accumulated_loss < 0 and total_value > self.total_value_transaction_with_no_tax:
+            taxable_profit, accumulated_loss = self._deduct_accumulated_loss(
                 taxable_profit, accumulated_loss)
-        tax, accumulated_loss = TaxService.__calculate_tax(
+        tax, accumulated_loss = self._calculate_tax(
             total_value, taxable_profit, profit, accumulated_loss
         )
         return tax, weighted_avg, total_qty, accumulated_loss
 
-    @staticmethod
-    def __get_sell_quantity(requested_qty, total_qty):
+    def _get_sell_quantity(self, requested_qty, total_qty):
         """
         Validates if the selling quantity is greater than the total quantity.
         Args:
@@ -105,8 +111,7 @@ class TaxService:
         """
         return min(requested_qty, total_qty)
 
-    @staticmethod
-    def __calculate_total_value(unit_cost, quantity):
+    def _calculate_total_value(self, unit_cost, quantity):
         """
         Calculates the total value of a transaction.
         Args:
@@ -117,8 +122,7 @@ class TaxService:
         """
         return unit_cost * quantity
 
-    @staticmethod
-    def __calculate_profit(unit_cost, weighted_avg, quantity):
+    def _calculate_profit(self, unit_cost, weighted_avg, quantity):
         """
         Calculates the profit for a given transaction.
         Args:
@@ -130,8 +134,7 @@ class TaxService:
         """
         return (unit_cost - weighted_avg) * quantity
 
-    @staticmethod
-    def __deduct_accumulated_loss(taxable_profit, accumulated_loss):
+    def _deduct_accumulated_loss(self, taxable_profit, accumulated_loss):
         """
         Deducts the accumulated loss from the profit if applicable.        
         Args:
@@ -148,8 +151,7 @@ class TaxService:
             taxable_profit = ZERO
         return taxable_profit, accumulated_loss
 
-    @staticmethod
-    def __calculate_tax(total_value, taxable_profit, profit, accumulated_loss):
+    def _calculate_tax(self, total_value, taxable_profit, profit, accumulated_loss):
         """
         Calculates the tax based on the provided parameters.
         Args:
@@ -161,9 +163,9 @@ class TaxService:
             tuple: (tax, accumulated_loss)
         """
         tax = ZERO
-        if total_value <= TOTAL_VALUE_TRANSACTION or taxable_profit <= 0:
+        if total_value <= self.total_value_transaction_with_no_tax or taxable_profit <= 0:
             if profit < 0:
                 accumulated_loss += profit
         else:
-            tax = round(taxable_profit * TAX_PERCENTAGE, 2)
+            tax = round(taxable_profit * self.tax_percentage, 2)
         return tax, accumulated_loss

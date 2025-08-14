@@ -17,9 +17,9 @@ class OperationService:
     def __init__(self, tax_service=None):
         """
         Args:
-            tax_service: Instance of a tax calculation service. Defaults to TaxService.
+            tax_service: Instance of a tax calculation service. Defaults to TaxService().
         """
-        self.tax_service = tax_service or TaxService
+        self.tax_service = tax_service or TaxService()
 
     def process_operations(self, operations: list[list[OperationDto]]) -> list[list[dict]]:
         """
