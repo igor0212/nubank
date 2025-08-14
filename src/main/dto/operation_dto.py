@@ -1,10 +1,15 @@
-from src.main.enum.operation_type_enum import OperationTypeEnum
+from src.main.enums.operation_type_enum import OperationTypeEnum
+from dataclasses import dataclass, field
 
 
+@dataclass
 class OperationDto:
     """
     Data Transfer Object representing a stock market operation (buy or sell).
     """
+    operation: OperationTypeEnum = field()
+    unit_cost: float = field()
+    quantity: int = field()
 
     def __init__(self, operation: str, unit_cost: float, quantity: int) -> None:
         """

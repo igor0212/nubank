@@ -1,13 +1,16 @@
 import unittest
-from src.main.service.tax_service import TaxService
-from src.main.enum.operation_type_enum import OperationTypeEnum
+from src.main.services.tax_service import TaxService
+from src.main.enums.operation_type_enum import OperationTypeEnum
 from src.main.dto.operation_dto import OperationDto
 
 
 class TestTaxService(unittest.TestCase):
+    def setUp(self):
+        self.tax_service = TaxService()
+
     def check_calculate_taxes(self, operations, expected):
         # When
-        actual = TaxService.calculate_taxes(operations)
+        actual = self.tax_service.calculate_taxes(operations)
 
         # Then
         self.assertEqual(actual, expected)
