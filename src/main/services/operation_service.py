@@ -14,7 +14,7 @@ class OperationService:
     Allows dependency injection for easier testing and flexibility.
     """
 
-    def __init__(self, tax_service=None):
+    def __init__(self, tax_service=None) -> None:
         """
         Args:
             tax_service: Instance of a tax calculation service. Defaults to TaxService().

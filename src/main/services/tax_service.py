@@ -17,7 +17,7 @@ class TaxService:
     Allows dependency injection for configuration.
     """
 
-    def __init__(self, tax_percentage: float = TAX_PERCENTAGE, total_value_transaction_with_no_tax: float = TOTAL_VALUE_TRANSACTION_WITH_NO_TAX):
+    def __init__(self, tax_percentage: float = TAX_PERCENTAGE, total_value_transaction_with_no_tax: float = TOTAL_VALUE_TRANSACTION_WITH_NO_TAX) -> None:
         """
         Args:
             tax_percentage (float): The tax percentage to apply on profits.
@@ -56,7 +56,7 @@ class TaxService:
 
         return taxes
 
-    def __process_sell_operation(self, op: OperationDto, weighted_avg, total_qty, accumulated_loss):
+    def __process_sell_operation(self, op: OperationDto, weighted_avg, total_qty, accumulated_loss) -> tuple:
         """
         Processes a sell operation, updating quantities, accumulated loss, and calculating tax.
         Args:
@@ -86,7 +86,7 @@ class TaxService:
         )
         return tax, weighted_avg, total_qty, accumulated_loss
 
-    def __calculate_tax(self, total_value, taxable_profit, profit, accumulated_loss):
+    def __calculate_tax(self, total_value, taxable_profit, profit, accumulated_loss) -> tuple:
         """
         Calculates the tax based on the provided parameters.
         Args:
