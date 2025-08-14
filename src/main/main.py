@@ -2,12 +2,15 @@
 Main application entry point.
 """
 import sys
-from src.main.service.OperationService import OperationService
-from src.main.util.OperationUtil import OperationUtil
+from src.main.service.operation_service import OperationService
+from src.main.util.operation_util import OperationUtil
+
 
 def main() -> None:
     """
-    Receives lists (one per line) of stock market operations in JSON format via stdin.
+    Reads lists (one per line) of stock market operations in JSON format via stdin,
+    processes them, and outputs the tax results.
+
     Example input:
     [{"operation":"buy", "unit-cost":10.00, "quantity": 10000},{"operation":"sell", "unit-cost":20.00, "quantity": 5000}]
     [{"operation":"buy", "unit-cost":20.00, "quantity": 10000}, {"operation":"sell", "unit-cost":10.00, "quantity": 5000}]
@@ -18,7 +21,8 @@ def main() -> None:
         results = OperationService.process_operations(operations_list)
         sys.stdout.write(str(results))
     except Exception as e:
-        raise RuntimeError(str(e))    
+        raise RuntimeError(str(e))
 
-if __name__ == "__main__":        
+
+if __name__ == "__main__":
     main()
