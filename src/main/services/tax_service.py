@@ -7,6 +7,7 @@ from src.main.enums.operation_type_enum import OperationTypeEnum
 from src.main.exceptions.exception import TaxCalculationError
 from src.main.dto.operation_dto import OperationDto
 from src.main.dto.operation_tax_dto import OperationTaxDto
+from src.main.utils.tax_util import TaxUtil
 
 
 class TaxService:
@@ -42,10 +43,10 @@ class TaxService:
             for op in operations:
                 tax = ZERO
                 if op.operation == OperationTypeEnum.BUY:
-                    weighted_avg, total_qty = self._update_weighted_avg(
+                    weighted_avg, total_qty = TaxUtil.update_weighted_avg(
                         weighted_avg, total_qty, op)
                 elif op.operation == OperationTypeEnum.SELL:
-                    tax, weighted_avg, total_qty, accumulated_loss = self._process_sell(
+                    tax, weighted_avg, total_qty, accumulated_loss = self.__process_sell(
                         op, weighted_avg, total_qty, accumulated_loss
                     )
 
@@ -55,22 +56,7 @@ class TaxService:
 
         return taxes
 
-    def _update_weighted_avg(self, weighted_avg, total_qty, op: OperationDto):
-        """
-        Updates the weighted average cost and total quantity for buy operations.
-        Args:
-            weighted_avg (float): Current weighted average.
-            total_qty (int): Current total quantity.
-            op (OperationDto): The buy operation.
-        Returns:
-            tuple: (weighted_avg, total_qty)
-        """
-        total_cost = weighted_avg * total_qty + op.unit_cost * op.quantity
-        total_qty += op.quantity
-        weighted_avg = total_cost / total_qty if total_qty > 0 else ZERO
-        return weighted_avg, total_qty
-
-    def _process_sell(self, op: OperationDto, weighted_avg, total_qty, accumulated_loss):
+    def __process_sell(self, op: OperationDto, weighted_avg, total_qty, accumulated_loss):
         """
         Processes a sell operation, updating quantities, accumulated loss, and calculating tax.
         Args:
@@ -81,11 +67,11 @@ class TaxService:
         Returns:
             tuple: (tax, weighted_avg, total_qty, accumulated_loss)
         """
-        sell_qty = self._get_sell_quantity(op.quantity, total_qty)
+        sell_qty = TaxUtil.get_sell_quantity(op.quantity, total_qty)
         total_qty -= sell_qty
-        total_value = self._calculate_total_value(
+        total_value = TaxUtil.calculate_total_value(
             op.unit_cost, sell_qty)
-        profit = self._calculate_profit(
+        profit = TaxUtil.calculate_profit(
             op.unit_cost, weighted_avg, sell_qty)
 
         taxable_profit = profit
@@ -93,65 +79,14 @@ class TaxService:
         # Should not deduct the profit obtained from accumulated losses if the total
         # value of the transaction is less than or equal to total_value_transaction
         if accumulated_loss < 0 and total_value > self.total_value_transaction_with_no_tax:
-            taxable_profit, accumulated_loss = self._deduct_accumulated_loss(
+            taxable_profit, accumulated_loss = TaxUtil.deduct_accumulated_loss(
                 taxable_profit, accumulated_loss)
-        tax, accumulated_loss = self._calculate_tax(
+        tax, accumulated_loss = self.__calculate_tax(
             total_value, taxable_profit, profit, accumulated_loss
         )
         return tax, weighted_avg, total_qty, accumulated_loss
 
-    def _get_sell_quantity(self, requested_qty, total_qty):
-        """
-        Validates if the selling quantity is greater than the total quantity.
-        Args:
-            requested_qty (int): Quantity requested to sell.
-            total_qty (int): Current total quantity.
-        Returns:
-            int: The validated selling quantity.
-        """
-        return min(requested_qty, total_qty)
-
-    def _calculate_total_value(self, unit_cost, quantity):
-        """
-        Calculates the total value of a transaction.
-        Args:
-            unit_cost (float): Unit cost of the asset.
-            quantity (int): Quantity of assets.
-        Returns:
-            float: The total value of the transaction.
-        """
-        return unit_cost * quantity
-
-    def _calculate_profit(self, unit_cost, weighted_avg, quantity):
-        """
-        Calculates the profit for a given transaction.
-        Args:
-            unit_cost (float): Unit cost of the asset.
-            weighted_avg (float): Weighted average cost.
-            quantity (int): Quantity of assets.
-        Returns:
-            float: The profit for the transaction.
-        """
-        return (unit_cost - weighted_avg) * quantity
-
-    def _deduct_accumulated_loss(self, taxable_profit, accumulated_loss):
-        """
-        Deducts the accumulated loss from the profit if applicable.        
-        Args:
-            taxable_profit (float): Current taxable profit.
-            accumulated_loss (float): Current accumulated loss.
-        Returns:
-            tuple: (taxable_profit, accumulated_loss)
-        """
-        taxable_profit += accumulated_loss
-        if taxable_profit > 0:
-            accumulated_loss = ZERO
-        else:
-            accumulated_loss = taxable_profit
-            taxable_profit = ZERO
-        return taxable_profit, accumulated_loss
-
-    def _calculate_tax(self, total_value, taxable_profit, profit, accumulated_loss):
+    def __calculate_tax(self, total_value, taxable_profit, profit, accumulated_loss):
         """
         Calculates the tax based on the provided parameters.
         Args:
