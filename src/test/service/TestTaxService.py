@@ -3,7 +3,7 @@ from src.main.service.TaxService import TaxService
 from src.main.enum.OperationType import OperationType
 from src.main.dto.OperationDto import OperationDto
 
-class TaxServiceTest(unittest.TestCase):
+class TestTaxService(unittest.TestCase):
     def check_calculate_taxes(self, operations, expected):
         #When
         actual = TaxService.calculate_taxes(operations)

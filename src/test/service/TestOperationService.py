@@ -3,7 +3,7 @@ from src.main.service.OperationService import OperationService
 from src.main.enum.OperationType import OperationType
 from src.main.dto.OperationDto import OperationDto
 
-class OperationServiceTest(unittest.TestCase):
+class TestOperationService(unittest.TestCase):
     def check_process_operations(self, expected, expected_lengths):
         #When
         actual = OperationService.process_operations(expected)        

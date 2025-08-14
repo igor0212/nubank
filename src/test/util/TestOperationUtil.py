@@ -2,7 +2,7 @@ import unittest
 from src.main.util.OperationUtil import OperationUtil
 from src.main.dto.OperationDto import OperationDto, OperationType
 
-class OperationUtilTest(unittest.TestCase):
+class TestOperationUtil(unittest.TestCase):
     def test_format_operations_file_valid(self):
         #Given
         lines = [
