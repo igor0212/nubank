@@ -17,7 +17,8 @@ def main() -> None:
     """
     lines = sys.stdin.readlines()
     try:
-        results = InputService.process_input(lines)
+        input_service = InputService()
+        results = input_service.process_input(lines)
         sys.stdout.write(str(results))
     except Exception as e:
         raise OperationProcessingError(str(e))

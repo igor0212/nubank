@@ -1,9 +1,18 @@
 import unittest
 from src.main.services.input_service import InputService
+from src.main.services.operation_service import OperationService
+from src.main.utils.operation_util import OperationUtil
 from src.main.exceptions.exception import OperationProcessingError
 
 
 class TestInputService(unittest.TestCase):
+    def setUp(self):
+        # Inject dependencies explicitly for testability
+        self.input_service = InputService(
+            operation_service=OperationService(),
+            operation_util=OperationUtil
+        )
+
     def test_process_input_valid(self):
         # Given
         lines = [
@@ -12,7 +21,7 @@ class TestInputService(unittest.TestCase):
         ]
 
         # When
-        result = InputService.process_input(lines)
+        result = self.input_service.process_input(lines)
 
         # Then
         self.assertIsInstance(result, list)
@@ -27,7 +36,7 @@ class TestInputService(unittest.TestCase):
             '[{"operation":"buy", "unit-cost":10.00, "quantity": 100}]'
         ]
         # When
-        result = InputService.process_input(lines)
+        result = self.input_service.process_input(lines)
 
         # Thens
         self.assertEqual(len(result), 1)
@@ -40,7 +49,7 @@ class TestInputService(unittest.TestCase):
 
         # Then
         with self.assertRaises(OperationProcessingError):
-            InputService.process_input(lines)
+            self.input_service.process_input(lines)
 
     def test_process_input_missing_fields(self):
         # Given
@@ -50,7 +59,7 @@ class TestInputService(unittest.TestCase):
 
         # Thens
         with self.assertRaises(OperationProcessingError):
-            InputService.process_input(lines)
+            self.input_service.process_input(lines)
 
     def test_process_input_invalid_operation_type(self):
         # Given
@@ -60,7 +69,7 @@ class TestInputService(unittest.TestCase):
 
         # Then
         with self.assertRaises(OperationProcessingError):
-            InputService.process_input(lines)
+            self.input_service.process_input(lines)
 
 
 if __name__ == "__main__":
