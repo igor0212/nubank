@@ -1,16 +1,12 @@
+from dataclasses import dataclass
+
+
+@dataclass
 class OperationTaxDto:
     """
     Data Transfer Object representing the tax result for an operation.
     """
-
-    def __init__(self, tax: float) -> None:
-        """
-        Initialize an OperationTaxDto.
-
-        Args:
-            tax (float): The tax value for the operation.
-        """
-        self.tax = tax
+    tax: float
 
     def to_dict(self) -> dict:
         """
