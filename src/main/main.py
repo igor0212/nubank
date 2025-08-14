@@ -2,8 +2,8 @@
 Main application entry point.
 """
 import sys
-from src.main.service.OperationService import OperationService
-from src.main.util.OperationUtil import OperationUtil
+from src.main.service.operation_service import OperationService
+from src.main.util.operation_util import OperationUtil
 
 def main() -> None:
     """

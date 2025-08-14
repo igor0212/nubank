@@ -22,5 +22,5 @@ To run all tests:
 
 To run a specific test:
 
-    python -m src.test.service.OperationServiceTest
+    python -m src.test.service.test_operation_service
 

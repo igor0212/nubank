@@ -1,12 +1,12 @@
-from src.main.enum.OperationType import OperationType
+from src.main.enum.operation_type_enum import OperationTypeEnum
 
 class OperationDto:
     def __init__(self, operation: str, unit_cost: float, quantity: int):
         # Accept both string and enum for flexibility
-        if isinstance(operation, OperationType):
+        if isinstance(operation, OperationTypeEnum):
             self.operation = operation
         else:
-            self.operation = OperationType(operation)
+            self.operation = OperationTypeEnum(operation)
         self.unit_cost = unit_cost
         self.quantity = quantity
 

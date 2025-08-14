@@ -1,6 +1,7 @@
 import unittest
-from src.main.util.OperationUtil import OperationUtil
-from src.main.dto.OperationDto import OperationDto, OperationType
+from src.main.util.operation_util import OperationUtil
+from src.main.dto.operation_dto import OperationDto
+from src.main.enum.operation_type_enum import OperationTypeEnum
 
 class TestOperationUtil(unittest.TestCase):
     def test_format_operations_file_valid(self):
@@ -16,8 +17,8 @@ class TestOperationUtil(unittest.TestCase):
         #Then
         self.assertEqual(len(result), 2)
         self.assertIsInstance(result[0][0], OperationDto)
-        self.assertEqual(result[0][0].operation, OperationType.BUY)
-        self.assertEqual(result[0][1].operation, OperationType.SELL)
+        self.assertEqual(result[0][0].operation, OperationTypeEnum.BUY)
+        self.assertEqual(result[0][1].operation, OperationTypeEnum.SELL)
         self.assertEqual(result[1][0].unit_cost, 20.00)
         self.assertEqual(result[1][0].quantity, 10000)
 
@@ -34,7 +35,7 @@ class TestOperationUtil(unittest.TestCase):
 
         #Then
         self.assertEqual(len(result), 1)
-        self.assertEqual(result[0][0].operation, OperationType.BUY)
+        self.assertEqual(result[0][0].operation, OperationTypeEnum.BUY)
 
     def test_format_operations_file_invalid_json(self):
         #Given

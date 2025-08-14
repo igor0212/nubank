@@ -2,8 +2,8 @@
 Operation service for application.
 """
 
-from src.main.dto.OperationDto import OperationDto
-from src.main.service.TaxService import TaxService
+from src.main.dto.operation_dto import OperationDto
+from src.main.service.tax_service import TaxService
 
 class OperationService:
     """Service for operations."""

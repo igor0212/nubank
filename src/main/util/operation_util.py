@@ -3,7 +3,7 @@ Operation util for application.
 """
 
 import json
-from src.main.dto.OperationDto import OperationDto
+from src.main.dto.operation_dto import OperationDto
 
 class OperationUtil:
     """Util for operations."""

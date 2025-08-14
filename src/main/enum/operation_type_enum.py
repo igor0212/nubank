@@ -1,6 +1,6 @@
 from enum import Enum
 
-class OperationType(Enum):
+class OperationTypeEnum(Enum):
     BUY = "buy"
     SELL = "sell"
     

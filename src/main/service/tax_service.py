@@ -1,10 +1,10 @@
 """
 Tax service for application.
 """
-from src.main.config.TaxConfig import TAX_PERCENTAGE, ZERO, TOTAL_VALUE_TRANSACTION
-from src.main.enum.OperationType import OperationType
-from src.main.dto.OperationDto import OperationDto
-from src.main.dto.OperationTaxDto import OperationTaxDto
+from src.main.config.tax_config import TAX_PERCENTAGE, ZERO, TOTAL_VALUE_TRANSACTION
+from src.main.enum.operation_type_enum import OperationTypeEnum
+from src.main.dto.operation_dto import OperationDto
+from src.main.dto.operation_tax_dto import OperationTaxDto
 
 class TaxService:
     """Service for taxes."""    
@@ -23,9 +23,9 @@ class TaxService:
 
         for op in operations:
             tax = ZERO
-            if op.operation == OperationType.BUY:
+            if op.operation == OperationTypeEnum.BUY:
                 weighted_avg, total_qty = TaxService.__update_weighted_avg(weighted_avg, total_qty, op)                
-            elif op.operation == OperationType.SELL:
+            elif op.operation == OperationTypeEnum.SELL:
                 tax, weighted_avg, total_qty, accumulated_loss = TaxService.__process_sell(
                     op, weighted_avg, total_qty, accumulated_loss
                 )                
