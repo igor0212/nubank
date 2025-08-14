@@ -1,3 +1,4 @@
+from src.main.exceptions.exception import OperationProcessingError
 """
 Operation util for application. It provides utility functions for processing operations.
 """
@@ -32,6 +33,6 @@ class OperationUtil:
                 results.append([OperationDto.from_dict(op)
                                for op in operations_list])
             except Exception:
-                raise ValueError(f"Invalid input: {line}")
+                raise OperationProcessingError(f"Invalid input: {line}")
 
         return results

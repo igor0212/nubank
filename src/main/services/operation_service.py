@@ -4,7 +4,8 @@ tax calculations.
 """
 
 from src.main.dto.operation_dto import OperationDto
-from src.main.service.tax_service import TaxService
+from src.main.services.tax_service import TaxService
+from src.main.exceptions.exception import OperationProcessingError
 
 
 class OperationService:
@@ -31,4 +32,5 @@ class OperationService:
                 tax_results.append(operation_taxes)
             return tax_results
         except Exception as e:
-            raise RuntimeError(f"Error processing operation: {str(e)}")
+            raise OperationProcessingError(
+                f"Error processing operation: {str(e)}")

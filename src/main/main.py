@@ -2,8 +2,9 @@
 Main application entry point.
 """
 import sys
-from src.main.service.operation_service import OperationService
-from src.main.util.operation_util import OperationUtil
+from src.main.services.operation_service import OperationService
+from src.main.utils.operation_util import OperationUtil
+from src.main.exceptions.exception import OperationProcessingError
 
 
 def main() -> None:
@@ -21,7 +22,7 @@ def main() -> None:
         results = OperationService.process_operations(operations_list)
         sys.stdout.write(str(results))
     except Exception as e:
-        raise RuntimeError(str(e))
+        raise OperationProcessingError(str(e))
 
 
 if __name__ == "__main__":

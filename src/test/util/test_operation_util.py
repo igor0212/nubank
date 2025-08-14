@@ -1,5 +1,6 @@
 import unittest
-from src.main.util.operation_util import OperationUtil
+from src.main.exceptions.exception import OperationProcessingError
+from src.main.utils.operation_util import OperationUtil
 from src.main.dto.operation_dto import OperationDto, OperationTypeEnum
 
 
@@ -44,7 +45,7 @@ class TestOperationUtil(unittest.TestCase):
         ]
 
         # Then
-        with self.assertRaises(ValueError):
+        with self.assertRaises(OperationProcessingError):
             OperationUtil.format_operations_file(lines)
 
     def test_format_operations_file_invalid_operation_type(self):
@@ -55,7 +56,7 @@ class TestOperationUtil(unittest.TestCase):
 
         # Then
         # Should raise ValueError because operation type is invalid
-        with self.assertRaises(ValueError):
+        with self.assertRaises(OperationProcessingError):
             OperationUtil.format_operations_file(lines)
 
 

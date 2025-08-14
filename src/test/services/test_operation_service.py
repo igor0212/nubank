@@ -1,5 +1,5 @@
 import unittest
-from src.main.service.operation_service import OperationService
+from src.main.services.operation_service import OperationService
 from src.main.dto.operation_dto import OperationDto, OperationTypeEnum
 
 

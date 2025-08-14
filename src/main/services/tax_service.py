@@ -4,6 +4,7 @@ Provides methods to calculate taxes for stock market operations according to bus
 """
 from src.main.config.tax_config import TAX_PERCENTAGE, ZERO, TOTAL_VALUE_TRANSACTION
 from src.main.enums.operation_type_enum import OperationTypeEnum
+from src.main.exceptions.exception import TaxCalculationError
 from src.main.dto.operation_dto import OperationDto
 from src.main.dto.operation_tax_dto import OperationTaxDto
 
@@ -41,7 +42,7 @@ class TaxService:
 
                 taxes.append(OperationTaxDto(tax).to_dict())
         except Exception as e:
-            raise ValueError(str(e))
+            raise TaxCalculationError(str(e))
 
         return taxes
 
