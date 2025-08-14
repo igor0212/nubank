@@ -6,15 +6,20 @@ import json
 from src.main.dto.operation_dto import OperationDto
 
 class OperationUtil:
-    """Util for operations."""
+    """
+    Utility class for formatting and processing operation input data.
+    """
     
     @staticmethod
     def format_operations_file(lines) -> list[list[OperationDto]]:
         """
-        Format each received line (each must be a JSON list of operations).        
+        Format each received line (each must be a JSON list of operations).
+
+        Args:
+            lines (list[str]): Lines of input, each a JSON array of operations.
 
         Returns:
-            list: List of OperationDto objects.
+            list: List of lists of OperationDto objects.
         """
         results = []
         for line in lines:
@@ -28,4 +33,3 @@ class OperationUtil:
                 raise ValueError(f"Invalid input: {line}")
             
         return results
-    
