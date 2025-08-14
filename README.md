@@ -30,27 +30,38 @@ flowchart TD
     subgraph CLI/API
         A[main.py]
     end
+    subgraph Application
+        B[InputService]
+        C[OperationService]
+    end
     subgraph Domain
-        B[OperationService]
-        C[TaxService]
-        D[OperationDto / OperationTaxDto]
-        E[OperationUtil]
+        D[TaxService]
+        E[OperationDto / OperationTaxDto]
     end
     subgraph Infra
-        F[config/TaxConfig.py]
-        G[enum/OperationTypeEnum.py]
+        F[OperationUtil / TaxUtil]
+        G[config/tax_config.py]
+        H[enum/OperationTypeEnum.py]
     end
-    A -->|stdin JSON| E
-    E -->|list of DTOs| B
-    B --> C
-    C --> D
-    B --> D
-    F -.-> C
+
+    A -->|stdin JSON| B
+    B -->|list of DTOs| C
+    C -->|calls| D
+    C --> E
+    D --> E
+    C --> F
+    D --> F
+    F -.-> G
+    F -.-> H
     G -.-> D
+    H -.-> E
 
 **Summary:**  
-- `main.py` receives operations via stdin, and uses `OperationUtil` to format the data.
-- `OperationService` processes the operations, delegating tax calculation to `TaxService`.
+- `main.py` receives operations via stdin and delegates input processing to `InputService`.
+- `InputService` parses and validates the input, then delegates business logic to `OperationService`.
+- `OperationService` processes the operations and delegates tax calculation to `TaxService`.
+- `TaxService` encapsulates all tax calculation rules and can be configured via dependency injection.
+- Utility classes (`OperationUtil`, `TaxUtil`) provide helper functions for parsing and calculations.
 - DTOs (`OperationDto`, `OperationTaxDto`) standardize the data.
 - Configurations and enums centralize rules and types.
 
@@ -95,7 +106,6 @@ Given the following operations:
 - The first "sell" is at 20.00, profit per share is 10.00, total profit is 50,000.00. Tax is 20% of 50,000.00 = 10,000.00.
 - The second "buy" updates the average price.
 - The second "sell" is at 10.00, which may result in no tax if there is no profit.
-
 
 ## Sonar Tests Results
 
